@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 struct Point {
     int x, y;
@@ -42,9 +43,9 @@ class Shape {
 int main () {
     // FIXME: create the following points using the three different methods
     //        of defining structs:
-              tri1 = (0, 0)
-              tri2 = (1, 2)
-              tri3 = (2, 0)
+              Point tri1(0,0);
+              Point tri2(1,2);
+              Point tri3(2,0);
 
     // adding points to tri
     Point triPts[3] = {tri1, tri2, tri3};
@@ -53,10 +54,10 @@ int main () {
 
     // FIXME: create the following points using your preferred struct
     //        definition:
-              quad1 = (0, 0)
-              quad2 = (0, 2)
-              quad3 = (2, 2)
-              quad4 = (2, 0)
+              Point quad1(0,0);
+              Point quad2(0,2);
+              Point quad3(2,2);
+              Point quad4(2,0);
 
     // adding points to quad
     Point quadPts[4] = {quad1, quad2, quad3, quad4};
