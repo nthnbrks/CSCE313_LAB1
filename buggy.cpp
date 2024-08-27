@@ -11,6 +11,7 @@ class Shape {
     int vertices;
     Point** points;
     
+    // set methods as public to fix access errors later in code
     public:
         Shape (int _vertices) {
             vertices = _vertices;
@@ -21,21 +22,25 @@ class Shape {
         }
 
         void addPoints (/* formal parameter for unsized array called pts */Point pts[]) {
+            // didn't want to add cstring library to deal with memcpy so I removed it and coded it in a more conventional format
             for (int i = 0; i <= vertices; i++) {
                 points[i] = new Point(pts[i].x,pts[i].y);
+                // add first point a second time to the end to make the shoelace formula work properly
                 points[vertices] = new Point(pts[0].x,pts[0].y);
             }
         }
 
     double* area () {
         int temp = 0;
-        for (int i = 0; i <= vertices-1; i++) {
+            // changed <= to < to fix seg fault here
+        for (int i = 0; i < vertices; i++) {
             // FIXME: there are two methods to access members of pointers
             //        use one to fix lhs and the other to fix rhs
             int lhs = points[i]->x * points[i+1]->y;
             int rhs = (*points[i+1]).x * (*points[i]).y;
             temp += (lhs - rhs);
         }
+        // needed to make new double to return proper variable type
         double* area = new double(abs(temp)/2.0);
         return area;
     }
