@@ -19,15 +19,20 @@ class Shape {
         }
 
         ~Shape () {
+            // Destructor added because points kept leaking
+            for (int i = 0; i <= vertices; i++) {
+                delete points[i];
+            }
+            delete[] points;
         }
 
         void addPoints (/* formal parameter for unsized array called pts */Point pts[]) {
             // didn't want to add cstring library to deal with memcpy so I removed it and coded it in a more conventional format
-            for (int i = 0; i <= vertices; i++) {
-                points[i] = new Point(pts[i].x,pts[i].y);
-                // add first point a second time to the end to make the shoelace formula work properly
-                points[vertices] = new Point(pts[0].x,pts[0].y);
+            for (int i = 0; i < vertices; i++) {
+                points[i] = new Point(pts[i].x,pts[i].y);       
             }
+            // add first point a second time to the end to make the shoelace formula work properly 
+            points[vertices] = new Point(pts[0].x,pts[0].y);
         }
 
     double* area () {
@@ -50,17 +55,17 @@ int main () {
     // FIXME: create the following points using the three different methods
     //        of defining structs:
               Point tri1;
-              Point* tri2 = new Point(1,2);
+              Point tri2; tri2.x = 1; tri2.y = 2;
               Point tri3(2,0);
 
     // adding points to tri
-    Point triPts[3] = {tri1, *tri2, tri3};
+    Point triPts[3] = {tri1, tri2, tri3};
     Shape* tri = new Shape(3);
     tri->addPoints(triPts);
 
     // FIXME: create the following points using your preferred struct
     //        definition:
-              Point quad1(0,0);
+              Point quad1;
               Point quad2(0,2);
               Point quad3(2,2);
               Point quad4(2,0);
@@ -71,6 +76,15 @@ int main () {
     quad->addPoints(quadPts);
 
     // FIXME: print out area of tri and area of quad
-    printf("Area of triangle: %f\n",*(tri->area()));
-    printf("Area of quadrilateral: %f\n",*(quad->area()));
+    double* triArea = tri->area();
+    double* quadArea = quad->area();
+    printf("Area of triangle: %f\n",*triArea);
+    printf("Area of quadrilateral: %f\n",*quadArea);
+
+    // Deleting everyting I dynamically allocated
+    delete triArea;
+    delete tri;
+    delete quadArea;
+    delete quad;
+    return 0;
 }
